@@ -104,6 +104,7 @@ namespace MyBarberAPI.Controllers
             var turnos = await _dbContext.Turno
         .Include(t => t.Barbero)
         .Include(t => t.Precio)
+        .Include(t => t.Usuario)
         .Where(t => t.IdBarbero == id && t.Dia.Date == dia.Date)
         .OrderBy(t => t.Horario) // Ordena por horario
         .ToListAsync();
@@ -113,19 +114,25 @@ namespace MyBarberAPI.Controllers
                 return NotFound("No turnos found for the specified criteria.");
             }
 
-            var turnosList = turnos.Select(t => new TurnoViewModel
-            {
-                Id = t.Id,
-                IdBarbero = t.IdBarbero,
-                IdUsuario = t.IdUsuario,
-                IdPrecio = t.IdPrecio,
-                Horario = t.Horario.ToString(@"hh\:mm"),
-                Dia = t.Dia,
-                ValorPrecio = t.Precio.Valor,
-                NombreBarbero = t.Barbero.Nombre,
-                DescripcionPrecio = t.Precio.Titulo,
-                NombreUsuario = t.Usuario.Nombre
-            }).ToList();
+            List<TurnoViewModel> turnosList = new List<TurnoViewModel>();
+
+            foreach (var t in turnos) {
+                TurnoViewModel turnoViewModel = new TurnoViewModel
+                {
+                    Id = t.Id,
+                    IdBarbero = t.IdBarbero,
+                    IdUsuario = t.IdUsuario,
+                    IdPrecio = t.IdPrecio,
+                    Horario = t.Horario.ToString(@"hh\:mm"),
+                    Dia = t.Dia,
+                    ValorPrecio = t.Precio.Valor,
+                    NombreBarbero = t.Barbero.Nombre,
+                    DescripcionPrecio = t.Precio.Titulo,
+                    NombreUsuario = t.Usuario.Nombre
+                };
+
+                turnosList.Add(turnoViewModel);
+            }
 
             return Ok(turnosList);
         }

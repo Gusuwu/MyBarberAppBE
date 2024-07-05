@@ -204,15 +204,8 @@ namespace MyBarberAPI.Controllers
                         Id = user.Id,
                         Nombre = user.Nombre,
                         Correo = user.Correo,
-                        Telefono = user.Telefono,
                         Usuario = user.Usuario1,
-                        Notas = user.Notas,
-                        Servicio = user.Servicio,
-                        Dias = dias,
-                        Horarios = horarios,
-                        Foto = user.Foto,
                         Token = tokenString,
-                        FotoUrl = base64Image,
                         Role = user.Role
                     };
                     return usuarioVM;
@@ -287,7 +280,8 @@ namespace MyBarberAPI.Controllers
                     Dias = dias,
                     Horarios = horarios,
                     Foto = u.Foto,
-                    FotoUrl = base64Image
+                    FotoUrl = base64Image,
+                    Role = u.Role
                 };
 
             return usuarioVM;
